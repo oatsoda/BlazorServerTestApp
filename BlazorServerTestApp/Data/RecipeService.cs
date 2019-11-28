@@ -9,8 +9,8 @@ namespace BlazorServerTestApp.Data
     {
         private readonly List<Recipe> m_Recipes = new List<Recipe>
         {
-            new Recipe { Id = Guid.NewGuid(), Name = "Spaghetti Bolognese", Reference = "Public Domain", TotalMinutes = 40, CreatedAt = DateTimeOffset.UtcNow.AddDays(-2), UpdatedAt = DateTimeOffset.UtcNow.AddDays(-1) },
-            new Recipe { Id = Guid.NewGuid(), Name = "Pizza", Reference = "Public Domain", TotalMinutes = 60, CreatedAt = DateTimeOffset.UtcNow.AddDays(-1), UpdatedAt = DateTimeOffset.UtcNow.AddDays(-1).AddHours(4) }
+            new Recipe { Name = "Spaghetti Bolognese", Reference = "Public Domain", TotalMinutes = 40, CreatedAt = DateTimeOffset.UtcNow.AddDays(-2), UpdatedAt = DateTimeOffset.UtcNow.AddDays(-1) },
+            new Recipe { Name = "Pizza", Reference = "Public Domain", TotalMinutes = 60, CreatedAt = DateTimeOffset.UtcNow.AddDays(-1), UpdatedAt = DateTimeOffset.UtcNow.AddDays(-1).AddHours(4) }
         };
 
         public async Task<IEnumerable<Recipe>> GetRecipes()

@@ -15,5 +15,10 @@ namespace BlazorServerTestApp.Data
         public DateTimeOffset CreatedAt { get; set; }
 
         public DateTimeOffset UpdatedAt { get; set; }
+
+        public Recipe()
+        {
+            Id = Guid.NewGuid();
+        }
     }
 }
