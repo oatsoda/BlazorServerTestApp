@@ -1,0 +1,48 @@
+﻿@page "/recipes"
+
+@using BlazorServerTestApp.Data
+@inject IRecipesService RecipesService
+
+<h1>Recipes</h1>
+
+<p>This component demonstrates fetching data from a service.</p>
+
+@if (m_Recipes == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Total Time</th>
+                <th>Reference</th>
+                <th>Created</th>
+                <th>Last Updated</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var recipe in m_Recipes)
+            {
+                <tr id="@recipe.Id">
+                    <td>@recipe.Name</td>
+                    <td>@recipe.TotalMinutes</td>
+                    <td>@recipe.Reference</td>
+                    <td>@recipe.CreatedAt.ToString("g")</td>
+                    <td>@recipe.UpdatedAt.ToString("g")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    IEnumerable<Recipe> m_Recipes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        m_Recipes = await RecipesService.GetRecipes();
+    }
+}
