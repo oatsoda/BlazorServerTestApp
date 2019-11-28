@@ -20,7 +20,7 @@ namespace BlazorServerTestApp.Data
 
         public async Task<Recipe> AddRecipe(Recipe recipe)
         {
-            recipe.CreatedAt = DateTimeOffset.UtcNow;
+            recipe.CreatedAt = recipe.UpdatedAt = DateTimeOffset.UtcNow;
             m_Recipes.Add(recipe);
             return recipe;
         }

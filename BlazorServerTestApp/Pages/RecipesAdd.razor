@@ -1,0 +1,62 @@
+﻿@using BlazorServerTestApp.Data
+@inject IRecipesService RecipesService
+
+<div class="modal" tabindex="-1" style="display:block" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">@ModalTitle</h3>
+                <button type="button" class="close" @onclick="OnClose">
+                    <span aria-hidden="true">X</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="Name" class="control-label">Name</label>
+                        <input for="Name" class="form-control" @bind="@Recipe.Name" />
+                    </div>
+                    <div class="form-group">
+                        <label for="Name" class="control-label">Total Minutes</label>
+                        <input for="Name" class="form-control" @bind="@Recipe.TotalMinutes" />
+                    </div>
+                    <div class="form-group">
+                        <label for="Name" class="control-label">Reference</label>
+                        <input for="Name" class="form-control" @bind="@Recipe.Reference" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-block btn-info" @onclick="Save" data-dismiss="modal">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    [Parameter]
+    public string ModalTitle { 
+        get; 
+        set; }
+
+    private Recipe Recipe { 
+        get; 
+        set;
+    } = new Recipe();
+
+    private bool IsVisible { get; set; }
+
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+    }
+
+    private async Task Save()
+    {
+        await RecipesService.AddRecipe(Recipe);
+        await OnClose.InvokeAsync(null);
+    }
+}

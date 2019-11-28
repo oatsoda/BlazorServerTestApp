@@ -13,6 +13,8 @@
 }
 else
 {
+    <button class="btn btn-primary" @onclick="AddRecipe">Add Recipe</button>
+
     <table class="table">
         <thead>
             <tr>
@@ -36,13 +38,30 @@ else
             }
         </tbody>
     </table>
+
+    if (m_IsAdding)
+    {
+        <RecipesAdd ModalTitle="Add Recipe" OnClose="@CloseAdd"/>
+    }
 }
 
 @code {
     IEnumerable<Recipe> m_Recipes;
 
+    bool m_IsAdding;
+
     protected override async Task OnInitializedAsync()
     {
         m_Recipes = await RecipesService.GetRecipes();
+    }
+
+    private void AddRecipe()
+    {
+        m_IsAdding = true;
+    }
+
+    private void CloseAdd()
+    {
+        m_IsAdding = false;
     }
 }
