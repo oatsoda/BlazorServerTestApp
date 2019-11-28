@@ -36,17 +36,10 @@
 
 @code {
     [Parameter]
-    public string ModalTitle { 
-        get; 
-        set; }
+    public string ModalTitle { get; set; }
 
-    private Recipe Recipe { 
-        get; 
-        set;
-    } = new Recipe();
-
-    private bool IsVisible { get; set; }
-
+    private Recipe Recipe { get; set; } = new Recipe();
+    
     [Parameter]
     public EventCallback OnClose { get; set; }
 
