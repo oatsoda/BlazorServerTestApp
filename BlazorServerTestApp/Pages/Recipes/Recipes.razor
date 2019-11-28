@@ -44,11 +44,11 @@ else
 
     if (m_IsAdding)
     {
-        <RecipesAdd ModalTitle="Add Recipe" OnClose="@CloseAdd" />
+        <RecipesAdd ModalTitle="Add Recipe" OnClose="@CloseModals" />
     }
     else if (m_IsEditing)
     {
-        <RecipesEdit ModalTitle="Edit Recipe" RecipeId="@m_EditingId" OnClose="@CloseAdd" />
+        <RecipesEdit ModalTitle="Edit Recipe" RecipeId="@m_EditingId" OnClose="@CloseModals" />
     }
 }
 
@@ -61,7 +61,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-    m_Recipes = await RecipesService.GetRecipes();
+        m_Recipes = await RecipesService.GetRecipes();
     }
 
     private void AddRecipe()
@@ -75,7 +75,7 @@ else
         m_EditingId = id;
     }
 
-    private void CloseAdd()
+    private void CloseModals()
     {
         m_IsAdding = false;
         m_IsEditing = false;
