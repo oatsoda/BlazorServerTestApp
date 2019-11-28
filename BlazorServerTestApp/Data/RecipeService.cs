@@ -18,6 +18,11 @@ namespace BlazorServerTestApp.Data
             return m_Recipes;
         }
 
+        public async Task<Recipe> GetRecipe(Guid id)
+        {
+            return m_Recipes.Single(r => r.Id == id);
+        }
+
         public async Task<Recipe> AddRecipe(Recipe recipe)
         {
             recipe.CreatedAt = recipe.UpdatedAt = DateTimeOffset.UtcNow;
