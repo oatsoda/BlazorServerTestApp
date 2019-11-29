@@ -2,49 +2,62 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using RecipesApp.App.Models;
+using RecipesApp.Domain.Infrastructure.Context;
 
 namespace RecipesApp.App.Data
 {
+    /*
+     * Not really the ideal use of Entity Framework - need to refactor away from this Service.  Perhaps dispatchers/handlers/mediators instead.
+     */
+
     public class RecipesService : IRecipesService
     {
-        private readonly List<Recipe> m_Recipes = new List<Recipe>
-        {
-            new Recipe { Name = "Spaghetti Bolognese", Reference = "Public Domain", TotalMinutes = 40, CreatedAt = DateTimeOffset.UtcNow.AddDays(-2), UpdatedAt = DateTimeOffset.UtcNow.AddDays(-1) },
-            new Recipe { Name = "Pizza", Reference = "Public Domain", TotalMinutes = 60, CreatedAt = DateTimeOffset.UtcNow.AddDays(-1), UpdatedAt = DateTimeOffset.UtcNow.AddDays(-1).AddHours(4) }
-        };
+        private readonly RecipesContext m_Context;
 
-        public async Task<IEnumerable<Recipe>> GetRecipes()
+        public RecipesService(RecipesContext context)
         {
-            return m_Recipes;
+            m_Context = context;
         }
 
-        public async Task<Recipe> GetRecipe(Guid id)
+        public async Task<IEnumerable<RecipeModel>> GetRecipes()
         {
-            return m_Recipes.Single(r => r.Id == id);
+            var recipes = await m_Context.Recipes.ToListAsync();
+
+            return recipes.Select(RecipeModel.FromDomainObject);
         }
 
-        public async Task<Recipe> AddRecipe(Recipe recipe)
+        public async Task<RecipeModel> GetRecipe(Guid id)
         {
-            recipe.CreatedAt = recipe.UpdatedAt = DateTimeOffset.UtcNow;
-            m_Recipes.Add(recipe);
-            return recipe;
+            var r = await m_Context.Recipes.FindAsync(id);
+            // TODO: Null check
+            return RecipeModel.FromDomainObject(r);
         }
 
-        public async Task<Recipe> UpdateRecipe(Recipe recipe)
+        public async Task<RecipeModel> AddRecipe(RecipeModel recipeModel)
         {
-            var existing = m_Recipes.Single(r => r.Id == recipe.Id);
-            m_Recipes.Remove(existing);
-
-            recipe.UpdatedAt = DateTimeOffset.UtcNow;
-            m_Recipes.Add(recipe);
-
-            return recipe;
+            var r = recipeModel.ToDomainObject();
+            m_Context.Recipes.Add(r);
+            await m_Context.SaveChangesAsync();
+            return RecipeModel.FromDomainObject(r);
         }
 
-        public async Task DeleteRecipe(Recipe recipe)
+        public async Task<RecipeModel> UpdateRecipe(RecipeModel recipeModel)
         {
-            var existing = m_Recipes.Single(r => r.Id == recipe.Id);
-            m_Recipes.Remove(existing);
+            var r = await m_Context.Recipes.FindAsync(recipeModel.Id);
+            // TODO: Null check
+            recipeModel.UpdateDomainObject(r);
+            await m_Context.SaveChangesAsync();
+            return RecipeModel.FromDomainObject(r);
+        }
+
+        public async Task DeleteRecipe(RecipeModel recipeModel)
+        {
+            var r = await m_Context.Recipes.FindAsync(recipeModel.Id);
+            // TODO: Null check
+            m_Context.Recipes.Remove(r);
+            await m_Context.SaveChangesAsync();
         }
     }
 }

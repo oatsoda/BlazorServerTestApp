@@ -1,15 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using RecipesApp.App.Models;
 
 namespace RecipesApp.App.Data
 {
     public interface IRecipesService
     {
-        Task<IEnumerable<Recipe>> GetRecipes();
-        Task<Recipe> GetRecipe(Guid id);
-        Task<Recipe> AddRecipe(Recipe recipe);
-        Task<Recipe> UpdateRecipe(Recipe recipe);
-        Task DeleteRecipe(Recipe recipe);
+        Task<IEnumerable<RecipeModel>> GetRecipes();
+        Task<RecipeModel> GetRecipe(Guid id);
+        Task<RecipeModel> AddRecipe(RecipeModel recipeModel);
+        Task<RecipeModel> UpdateRecipe(RecipeModel recipeModel);
+        Task DeleteRecipe(RecipeModel recipeModel);
     }
 }

@@ -1,5 +1,6 @@
 ﻿@page "/recipes"
 @using RecipesApp.App.Data
+@using RecipesApp.App.Models
 @inject IRecipesService RecipesService
 
 <h1>Recipes</h1>
@@ -51,7 +52,7 @@ else
 }
 
 @code {
-    IEnumerable<Recipe> m_Recipes;
+    IEnumerable<RecipeModel> m_Recipes;
 
     bool m_IsAdding;
     bool m_IsEditing;

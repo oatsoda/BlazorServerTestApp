@@ -1,4 +1,5 @@
 ﻿@using RecipesApp.App.Data
+@using RecipesApp.App.Models
 @inject IRecipesService RecipesService
 
 <div class="modal" tabindex="-1" style="display:block" role="dialog">
@@ -14,15 +15,15 @@
                 <form>
                     <div class="form-group">
                         <label for="Name" class="control-label">Name</label>
-                        <input for="Name" class="form-control" @bind="@Recipe.Name" />
+                        <input for="Name" class="form-control" @bind="@RecipeModel.Name" />
                     </div>
                     <div class="form-group">
                         <label for="Name" class="control-label">Total Minutes</label>
-                        <input for="Name" class="form-control" @bind="@Recipe.TotalMinutes" />
+                        <input for="Name" class="form-control" @bind="@RecipeModel.TotalMinutes" />
                     </div>
                     <div class="form-group">
                         <label for="Name" class="control-label">Reference</label>
-                        <input for="Name" class="form-control" @bind="@Recipe.Reference" />
+                        <input for="Name" class="form-control" @bind="@RecipeModel.Reference" />
                     </div>
                 </form>
             </div>
@@ -38,7 +39,7 @@
     [Parameter]
     public string ModalTitle { get; set; }
 
-    private Recipe Recipe { get; set; } = new Recipe();
+    private RecipeModel RecipeModel { get; set; } = new RecipeModel();
     
     [Parameter]
     public EventCallback OnClose { get; set; }
@@ -49,7 +50,7 @@
 
     private async Task Save()
     {
-        await RecipesService.AddRecipe(Recipe);
+        await RecipesService.AddRecipe(RecipeModel);
         await OnClose.InvokeAsync(null);
     }
 }

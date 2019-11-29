@@ -10,14 +10,14 @@ namespace RecipesApp.Domain
 
         [Required(AllowEmptyStrings = false)]
         [MaxLength(100)]
-        public string Name { get; private set; }
+        public string Name { get; set; }
 
         [Required]
-        public int TotalMinutes { get; private set; }
+        public int TotalMinutes { get; set; }
 
         [Required(AllowEmptyStrings = true)]
         [MaxLength(50)]
-        public string Reference { get; private set; }
+        public string Reference { get; set; }
 
         // ReSharper restore AutoPropertyCanBeMadeGetOnly.Local
         // ReSharper restore UnusedAutoPropertyAccessor.Local
