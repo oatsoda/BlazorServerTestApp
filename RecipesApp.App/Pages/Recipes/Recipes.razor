@@ -47,7 +47,7 @@ else
     }
     else if (m_IsEditing)
     {
-        <RecipesEdit ModalTitle="Edit Recipe" RecipeId="@m_EditingId" OnClose="@CloseModals" OnComplete="@CloseModals" />
+        <RecipesEdit ModalTitle="Edit Recipe" RecipeId="@m_EditingId" OnClose="@CloseModals" OnComplete="@CloseModals" /><!-- Why does Edit work without reloading? -->
     }
 }
 
