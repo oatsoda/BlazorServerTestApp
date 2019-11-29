@@ -47,6 +47,9 @@
     [Parameter]
     public EventCallback OnClose { get; set; }
 
+    [Parameter]
+    public EventCallback OnComplete { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         RecipeModel = await RecipesService.GetRecipe(RecipeId);
@@ -55,6 +58,6 @@
     private async Task Save()
     {
         RecipeModel = await RecipesService.UpdateRecipe(RecipeModel);
-        await OnClose.InvokeAsync(null);
+        await OnComplete.InvokeAsync(null);
     }
 }

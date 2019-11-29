@@ -13,7 +13,7 @@
 }
 else
 {
-    <p><button class="btn btn-primary" @onclick="AddRecipe">Add Recipe</button></p>
+    <p><button class="btn btn-primary" @onclick="OpenAddModal">Add Recipe</button></p>
 
     <table class="table">
         <thead>
@@ -35,7 +35,7 @@ else
                     <td>@recipe.Reference</td>
                     <td>@recipe.CreatedAt.ToString("g")</td>
                     <td>@recipe.UpdatedAt.ToString("g")</td>
-                    <td><button class="btn btn-primary" @onclick="() => EditRecipe(recipe.Id)">Edit</button> <button class="btn btn-primary" @onclick="(async () => await RecipesService.DeleteRecipe(recipe))">Delete</button></td>
+                    <td><button class="btn btn-primary" @onclick="() => OpenEditModal(recipe.Id)">Edit</button> <button class="btn btn-primary" @onclick="(async () => await DeleteRecipe(recipe))">Delete</button></td>
                 </tr>
             }
         </tbody>
@@ -43,11 +43,11 @@ else
 
     if (m_IsAdding)
     {
-        <RecipesAdd ModalTitle="Add Recipe" OnClose="@CloseModals" />
+        <RecipesAdd ModalTitle="Add Recipe" OnClose="@CloseModals" OnComplete="@DataUpdated" />
     }
     else if (m_IsEditing)
     {
-        <RecipesEdit ModalTitle="Edit Recipe" RecipeId="@m_EditingId" OnClose="@CloseModals" />
+        <RecipesEdit ModalTitle="Edit Recipe" RecipeId="@m_EditingId" OnClose="@CloseModals" OnComplete="@CloseModals" />
     }
 }
 
@@ -60,22 +60,40 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        await Load();
+    }
+
+    private async Task Load()
+    {
         m_Recipes = await RecipesService.GetRecipes();
     }
 
-    private void AddRecipe()
+    private void OpenAddModal()
     {
         m_IsAdding = true;
     }
 
-    private void EditRecipe(Guid id)
+    private void OpenEditModal(Guid id)
     {
         m_IsEditing = true;
         m_EditingId = id;
     }
-    
+
+    private async Task DeleteRecipe(RecipeModel recipe)
+    {
+        await RecipesService.DeleteRecipe(recipe);
+        await Load();
+    }
+
+    private async Task DataUpdated()
+    {
+        await Load();
+        CloseModals();
+    }
+
     private void CloseModals()
     {
+        m_EditingId = Guid.Empty;
         m_IsAdding = false;
         m_IsEditing = false;
     }

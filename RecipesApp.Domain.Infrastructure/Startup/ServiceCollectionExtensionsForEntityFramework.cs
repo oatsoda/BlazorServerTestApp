@@ -33,6 +33,17 @@ namespace RecipesApp.Domain.Infrastructure.Startup
                                                            options.UseSqlServer(connectionString, o => o.EnableRetryOnFailure());
                                                        });
 
+
+            /*
+             * Basic registration
+             */
+
+            services.AddDbContext<RecipesContext>((serviceProvider, options) =>
+                                                  {
+                                                      options.UseSqlServer(connectionString, o => o.EnableRetryOnFailure());
+                                                  },
+                                                  ServiceLifetime.Transient);
+
             return services;
         }
     }

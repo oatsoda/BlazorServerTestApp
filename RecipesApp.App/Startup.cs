@@ -23,9 +23,9 @@ namespace RecipesApp.App
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddScoped<IRecipesService, RecipesService>();
+            services.AddTransient<IRecipesService, RecipesService>();
 
-            services.AddEntityFramework(Configuration.GetConnectionString("RecipesConnection")); // TODO: Blazor "Scoped" is probably not correct otherwise it will live for whole lifetime of SignalR pipe.
+            services.AddEntityFramework(Configuration.GetConnectionString("RecipesConnection")); 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

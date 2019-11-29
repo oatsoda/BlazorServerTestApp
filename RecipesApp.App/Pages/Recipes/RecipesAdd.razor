@@ -40,9 +40,12 @@
     public string ModalTitle { get; set; }
 
     private RecipeModel RecipeModel { get; set; } = new RecipeModel();
-    
+
     [Parameter]
     public EventCallback OnClose { get; set; }
+
+    [Parameter]
+    public EventCallback OnComplete { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -51,6 +54,6 @@
     private async Task Save()
     {
         await RecipesService.AddRecipe(RecipeModel);
-        await OnClose.InvokeAsync(null);
+        await OnComplete.InvokeAsync(null);
     }
 }
