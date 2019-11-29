@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BlazorServerTestApp.Data
+namespace RecipesApp.App.Data
 {
     public class RecipesService : IRecipesService
     {

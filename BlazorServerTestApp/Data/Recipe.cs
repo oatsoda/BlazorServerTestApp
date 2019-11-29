@@ -1,6 +1,6 @@
 using System;
 
-namespace BlazorServerTestApp.Data
+namespace RecipesApp.App.Data
 {
     public class Recipe
     {

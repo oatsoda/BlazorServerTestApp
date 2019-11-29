@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace BlazorServerTestApp.Data
+namespace RecipesApp.App.Data
 {
     public interface IRecipesService
     {

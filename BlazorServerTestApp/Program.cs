@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace BlazorServerTestApp
+namespace RecipesApp.App
 {
     public class Program
     {

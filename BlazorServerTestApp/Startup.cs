@@ -1,12 +1,12 @@
-using BlazorServerTestApp.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RecipesApp.App.Data;
 using RecipesApp.Domain.Infrastructure.Startup;
 
-namespace BlazorServerTestApp
+namespace RecipesApp.App
 {
     public class Startup
     {
