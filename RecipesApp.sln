@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29519.87
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RecipesApp.App", "BlazorServerTestApp\RecipesApp.App.csproj", "{DCB7A404-DB16-48F4-9FBC-AA7D9219E318}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RecipesApp.Domain", "RecipesApp.Domain\RecipesApp.Domain.csproj", "{1EEA0938-145D-4D61-A849-701A23458620}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RecipesApp.Domain.Infrastructure", "RecipesApp.Domain.Infrastructure\RecipesApp.Domain.Infrastructure.csproj", "{B864DD50-3DF5-44E9-B02E-18916BA546B2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RecipesApp.Domain.Infrastructure.RunMigrations", "RecipesApp.Domain.Infrastructure.RunMigrations\RecipesApp.Domain.Infrastructure.RunMigrations.csproj", "{D6BEAA93-4255-4A93-B546-CD40CD6B1205}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RecipesApp.App", "RecipesApp.App\RecipesApp.App.csproj", "{A80EC83D-8305-4C9A-AEB5-4FD02875B55D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{DCB7A404-DB16-48F4-9FBC-AA7D9219E318}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DCB7A404-DB16-48F4-9FBC-AA7D9219E318}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DCB7A404-DB16-48F4-9FBC-AA7D9219E318}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DCB7A404-DB16-48F4-9FBC-AA7D9219E318}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1EEA0938-145D-4D61-A849-701A23458620}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1EEA0938-145D-4D61-A849-701A23458620}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1EEA0938-145D-4D61-A849-701A23458620}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -33,6 +29,10 @@ Global
 		{D6BEAA93-4255-4A93-B546-CD40CD6B1205}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6BEAA93-4255-4A93-B546-CD40CD6B1205}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6BEAA93-4255-4A93-B546-CD40CD6B1205}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A80EC83D-8305-4C9A-AEB5-4FD02875B55D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A80EC83D-8305-4C9A-AEB5-4FD02875B55D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A80EC83D-8305-4C9A-AEB5-4FD02875B55D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A80EC83D-8305-4C9A-AEB5-4FD02875B55D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
