@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "RecipesApp.Domain.Infrastructure.RunMigrations": {
+      "commandName": "Project",
+      "commandLineArgs": "Server=(localdb)\\mssqllocaldb;Database=Recipes;Trusted_Connection=True; Dev"
+    }
+  }
+}
