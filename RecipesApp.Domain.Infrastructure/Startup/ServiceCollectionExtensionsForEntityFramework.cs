@@ -2,6 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using RecipesApp.Domain.Infrastructure.Context;
 using System;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace RecipesApp.Domain.Infrastructure.Startup
 {
@@ -32,17 +34,9 @@ namespace RecipesApp.Domain.Infrastructure.Startup
                                                        {
                                                            options.UseSqlServer(connectionString, o => o.EnableRetryOnFailure());
                                                        });
-
-
-            /*
-             * Basic registration
-             */
-
-            services.AddDbContext<RecipesContext>((serviceProvider, options) =>
-                                                  {
-                                                      options.UseSqlServer(connectionString, o => o.EnableRetryOnFailure());
-                                                  },
-                                                  ServiceLifetime.Transient);
+            
+            services.AddDefaultIdentity<IdentityUser>()
+                    .AddEntityFrameworkStores<RecipesContext>();
 
             return services;
         }

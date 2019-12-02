@@ -2,12 +2,13 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using RecipesApp.Domain.Bases;
 
 namespace RecipesApp.Domain.Infrastructure.Context
 {
-    public class RecipesContext : DbContext
+    public class RecipesContext : IdentityDbContext
     {
         public DbSet<Recipe> Recipes { get; set; }
         

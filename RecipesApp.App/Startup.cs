@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RecipesApp.App.Areas.Identity;
 using RecipesApp.App.Data;
 using RecipesApp.Domain.Infrastructure.Startup;
 
@@ -24,6 +27,7 @@ namespace RecipesApp.App
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddTransient<IRecipesService, RecipesService>();
+            services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
 
             services.AddEntityFramework(Configuration.GetConnectionString("RecipesConnection")); 
         }
@@ -47,11 +51,15 @@ namespace RecipesApp.App
 
             app.UseRouting();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapBlazorHub();
-                endpoints.MapFallbackToPage("/_Host");
-            });
+                             {
+                                 //endpoints.MapControllers();
+                                 endpoints.MapBlazorHub();
+                                 endpoints.MapFallbackToPage("/_Host");
+                             });
         }
     }
 }
