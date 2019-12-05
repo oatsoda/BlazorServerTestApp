@@ -32,23 +32,21 @@ namespace RecipesApp.Domain.Infrastructure.RunMigrations
 
             Console.WriteLine($"Running migration on DB '{connStringBuilder.InitialCatalog}' on server '{connStringBuilder.DataSource}'");
 
-            //      // We have to register a Service Provider to register a Fake Mediator to avoid exceptions in the Context where we use Service Locator
+            // If using Pooled Context and Service Locator
             // var sc = new ServiceCollection();
             // sc.AddSingleton<AuthenticationStateProvider, MockAuthStateProvider>();
             // sc.AddEntityFramework("");
             // var sp = sc.BuildServiceProvider();
             
             var builder = new DbContextOptionsBuilder<RecipesContext>()
-                //          .UseInternalServiceProvider(sp)
-               .UseSqlServer(connString);
+            //  .UseInternalServiceProvider(sp)
+                .UseSqlServer(connString);
 
             var context = new RecipesContext(builder.Options, new MockAuthStateProvider());
             context.Database.SetCommandTimeout(TimeSpan.FromSeconds(_DATABASE_COMMAND_TIMEOUT_SECONDS));
             context.Database.Migrate();
 
             Console.WriteLine($"Seeding data for '{environment}'...");
-
-            //TestDataSeeder.SeedData(context, environment).GetAwaiter().GetResult();
 
 #if DEBUG
             Console.WriteLine("Press enter to exit.");
@@ -59,9 +57,6 @@ namespace RecipesApp.Domain.Infrastructure.RunMigrations
 
     public class MockAuthStateProvider : AuthenticationStateProvider
     {
-        public override async Task<AuthenticationState> GetAuthenticationStateAsync()
-        {
-            return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity[] { new ClaimsIdentity(new Claim[] { new Claim("", ""), }), }));
-        }
+        public override Task<AuthenticationState> GetAuthenticationStateAsync() => Task.FromResult(new AuthenticationState(new ClaimsPrincipal())); // Migrations don't access the Principal, so just pass empty one.
     }
 }
