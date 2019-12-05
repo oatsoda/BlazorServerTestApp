@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using RecipesApp.Domain.Bases;
@@ -10,19 +13,23 @@ namespace RecipesApp.Domain.Infrastructure.Context
 {
     public class RecipesContext : IdentityDbContext
     {
+        private readonly AuthenticationStateProvider m_AuthenticationStateProvider;
+
         public DbSet<Recipe> Recipes { get; set; }
         
         #region Ctors
 
         // ReSharper disable once SuggestBaseTypeForParameter - recommended that EF Context fixed to specific context type.
-        public RecipesContext(DbContextOptions<RecipesContext> options) : base(options)
+        public RecipesContext(DbContextOptions<RecipesContext> options, AuthenticationStateProvider authenticationStateProvider) : base(options)
         {
             // Ctor required for Migrations
+            m_AuthenticationStateProvider = authenticationStateProvider;
         }
 
-        protected RecipesContext(DbContextOptions options) : base(options)
+        protected RecipesContext(DbContextOptions options, AuthenticationStateProvider authenticationStateProvider) : base(options)
         {
             // Ctor required for Unit Tests
+            m_AuthenticationStateProvider = authenticationStateProvider;
         }
 
         #endregion
@@ -63,7 +70,7 @@ namespace RecipesApp.Domain.Infrastructure.Context
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
         {
-            SetTimestamps();
+            SetCreatedUpdated().GetAwaiter().GetResult();
             var result = base.SaveChanges(acceptAllChangesOnSuccess);
 
             return result;
@@ -71,27 +78,44 @@ namespace RecipesApp.Domain.Infrastructure.Context
 
         // public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken()) - No override as base calls: Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = new CancellationToken())
 
-        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = new CancellationToken())
+        public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = new CancellationToken())
         {
-            SetTimestamps();
-            var result = base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+            await SetCreatedUpdated();
+            var result = await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
 
             return result;
         }
 
         #endregion
 
-        protected virtual void SetTimestamps()
+        protected virtual async Task  SetCreatedUpdated()
         {
             var entities = ChangeTracker.Entries().Where(x => x.Entity is BaseEntity && (x.State == EntityState.Added || x.State == EntityState.Modified));
 
+            var authState = await m_AuthenticationStateProvider.GetAuthenticationStateAsync();
+
             foreach (var entity in entities)
             {
-                if (entity.State == EntityState.Added)
-                    ((BaseEntity)entity.Entity).CreatedAt = DateTimeOffset.UtcNow; ;
+                var baseEntity = (BaseEntity)entity.Entity;
 
-                ((BaseEntity)entity.Entity).UpdatedAt = DateTimeOffset.UtcNow;
+                baseEntity.UpdatedAt = DateTimeOffset.UtcNow;
+                baseEntity.UpdatedBy = authState.User.UserId();
+
+                if (entity.State != EntityState.Added)
+                    continue;
+
+                baseEntity.CreatedAt = baseEntity.UpdatedAt;
+                baseEntity.CreatedBy = baseEntity.UpdatedBy;
             }
+        }
+    }
+
+
+    public static class ClaimsPrincipalExtensions
+    {
+        public static string UserId(this ClaimsPrincipal claimsPrincipal)
+        {
+            return claimsPrincipal.Identities.Single().Claims.Single(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
         }
     }
 }

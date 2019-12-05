@@ -1,7 +1,10 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using RecipesApp.Domain.Infrastructure.Context;
+using System;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace RecipesApp.Domain.Infrastructure.RunMigrations
 {
@@ -30,16 +33,16 @@ namespace RecipesApp.Domain.Infrastructure.RunMigrations
             Console.WriteLine($"Running migration on DB '{connStringBuilder.InitialCatalog}' on server '{connStringBuilder.DataSource}'");
 
             //      // We have to register a Service Provider to register a Fake Mediator to avoid exceptions in the Context where we use Service Locator
-            //      var sc = new ServiceCollection();
-            //      sc.AddSingleton<IMediator, MockMediator>();
-            //      sc.AddEntityFramework("");
-            //      var sp = sc.BuildServiceProvider();
-
+            // var sc = new ServiceCollection();
+            // sc.AddSingleton<AuthenticationStateProvider, MockAuthStateProvider>();
+            // sc.AddEntityFramework("");
+            // var sp = sc.BuildServiceProvider();
+            
             var builder = new DbContextOptionsBuilder<RecipesContext>()
                 //          .UseInternalServiceProvider(sp)
                .UseSqlServer(connString);
 
-            var context = new RecipesContext(builder.Options);
+            var context = new RecipesContext(builder.Options, new MockAuthStateProvider());
             context.Database.SetCommandTimeout(TimeSpan.FromSeconds(_DATABASE_COMMAND_TIMEOUT_SECONDS));
             context.Database.Migrate();
 
@@ -51,6 +54,14 @@ namespace RecipesApp.Domain.Infrastructure.RunMigrations
             Console.WriteLine("Press enter to exit.");
             Console.ReadLine();
 #endif
+        }
+    }
+
+    public class MockAuthStateProvider : AuthenticationStateProvider
+    {
+        public override async Task<AuthenticationState> GetAuthenticationStateAsync()
+        {
+            return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity[] { new ClaimsIdentity(new Claim[] { new Claim("", ""), }), }));
         }
     }
 }
