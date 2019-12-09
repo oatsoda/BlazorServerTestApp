@@ -1,4 +1,5 @@
-﻿using RecipesApp.Domain.Bases;
+﻿using System.Collections.Generic;
+using RecipesApp.Domain.Bases;
 using System.ComponentModel.DataAnnotations;
 
 namespace RecipesApp.Domain
@@ -19,10 +20,19 @@ namespace RecipesApp.Domain
         [MaxLength(50)]
         public string Reference { get; set; }
 
+        /* Navigation Properties */
+
+        public List<Ingredient> Ingredients { get; private set; }
+
         // ReSharper restore AutoPropertyCanBeMadeGetOnly.Local
         // ReSharper restore UnusedAutoPropertyAccessor.Local
 
-        public Recipe(string name, int totalMinutes, string reference)
+        private Recipe()
+        {
+            Ingredients = new List<Ingredient>();
+        }
+
+        public Recipe(string name, int totalMinutes, string reference) : this()
         {
             Name = name;
             TotalMinutes = totalMinutes;

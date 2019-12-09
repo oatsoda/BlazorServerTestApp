@@ -51,8 +51,16 @@ namespace RecipesApp.Domain.Infrastructure.Context
              * https://docs.microsoft.com/en-us/ef/core/modeling/relational/indexes
              */
             modelBuilder.Entity<Recipe>()
-                .HasIndex(a => a.Name)
-                .IsUnique();
+                        .HasIndex(a => a.Name)
+                        .IsUnique();
+
+            /* DATA TYPES: Mappings from .NET to Data Store specific
+             * https://docs.microsoft.com/en-us/ef/core/modeling/relational/data-types
+             */
+            modelBuilder.Entity<Ingredient>()
+                        .Property(nameof(Ingredient.Quantity))
+                        .HasColumnType("decimal(10, 2)");
+            
 
             /* DELETE BEHAVIOUR: Not supported with Data Annotations in EF.
              * https://docs.microsoft.com/en-us/ef/core/modeling/relationships
