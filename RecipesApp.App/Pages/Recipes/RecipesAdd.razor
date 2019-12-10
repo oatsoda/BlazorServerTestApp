@@ -37,8 +37,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                        @foreach (var ingredient in @RecipeModel.Ingredients)
-                        {
+                    @foreach (var ingredient in @RecipeModel.Ingredients)
+                    {
                         <tr id="@ingredient.Id">
                             <td>@ingredient.Name</td>
                             <td>@ingredient.Quantity</td>
@@ -47,7 +47,7 @@
                                 <button class="btn btn-block btn-info" @onclick="() => RemoveIngredient(ingredient)">Remove</button>
                             </td>
                         </tr>
-                        }
+                    }
 
                     <tr>
                         <td>

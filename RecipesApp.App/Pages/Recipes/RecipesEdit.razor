@@ -18,51 +18,51 @@
                         <input for="Name" class="form-control" @bind="@RecipeModel.Name" />
                     </div>
                     <div class="form-group">
-                        <label for="Name" class="control-label">Total Minutes</label>
-                        <input for="Name" class="form-control" @bind="@RecipeModel.TotalMinutes" />
+                        <label for="TotalMinutes" class="control-label">Total Minutes</label>
+                        <input for="TotalMinutes" class="form-control" @bind="@RecipeModel.TotalMinutes" />
                     </div>
                     <div class="form-group">
-                        <label for="Name" class="control-label">Reference</label>
-                        <input for="Name" class="form-control" @bind="@RecipeModel.Reference" />
+                        <label for="Reference" class="control-label">Reference</label>
+                        <input for="Reference" class="form-control" @bind="@RecipeModel.Reference" />
                     </div>
                 </form>
 
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Quantity</th>
-                            <th>Quantity Unit</th>
-                            <th></th>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Quantity</th>
+                        <th>Quantity Unit</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var ingredient in @RecipeModel.Ingredients)
+                    {
+                        <tr id="@ingredient.Id">
+                            <td>@ingredient.Name</td>
+                            <td>@ingredient.Quantity</td>
+                            <td>@ingredient.QuantityType</td>
+                            <td>
+                                <button class="btn btn-block btn-info" @onclick="() => RemoveIngredient(ingredient)">Remove</button>
+                            </td>
                         </tr>
-                        </thead>
-                        <tbody>
-                        @foreach (var ingredient in @RecipeModel.Ingredients)
-                        {
-                            <tr id="@ingredient.Id">
-                                <td>@ingredient.Name</td>
-                                <td>@ingredient.Quantity</td>
-                                <td>@ingredient.QuantityType</td>
-                                <td>
-                                    <button class="btn btn-block btn-info" @onclick="() => RemoveIngredient(ingredient)">Remove</button>
-                                </td>
-                            </tr>
-                        }
+                    }
 
-                        <tr>
-                            <td>
-                                <input for="Name" class="form-control" @bind="@NewIngredientModel.Name" />
-                            </td>
-                            <td>
-                                <input for="Name" class="form-control" @bind="@NewIngredientModel.Quantity" />
-                            </td>
-                            <td>
-                                <input for="Name" class="form-control" @bind="@NewIngredientModel.QuantityType" />
-                            </td>
-                            <td>
-                                <button class="btn btn-block btn-info" @onclick="AddIngredient">Add</button>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>
+                            <input for="Name" class="form-control" @bind="@NewIngredientModel.Name" />
+                        </td>
+                        <td>
+                            <input for="Name" class="form-control" @bind="@NewIngredientModel.Quantity" />
+                        </td>
+                        <td>
+                            <input for="Name" class="form-control" @bind="@NewIngredientModel.QuantityType" />
+                        </td>
+                        <td>
+                            <button class="btn btn-block btn-info" @onclick="AddIngredient">Add</button>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
