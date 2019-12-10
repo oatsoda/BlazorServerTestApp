@@ -10,10 +10,5 @@ namespace RecipesApp.Domain.Bases
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Local - required by EF
         public Guid Id { get; protected set; }
-
-        protected BaseUniqueEntity()
-        {
-            Id = Guid.NewGuid();
-        }
     }
 }

@@ -30,9 +30,11 @@ namespace RecipesApp.App.Data
 
         public async Task<RecipeModel> GetRecipe(Guid id)
         {
-            var r = await m_Context.Recipes.FindAsync(id);
+            var recipe = await m_Context.Recipes
+                                        .Include(r => r.Ingredients)
+                                        .FirstOrDefaultAsync(r => r.Id == id);
             // TODO: Null check
-            return RecipeModel.FromDomainObject(r);
+            return RecipeModel.FromDomainObject(recipe);
         }
 
         public async Task<RecipeModel> AddRecipe(RecipeModel recipeModel)
@@ -45,18 +47,20 @@ namespace RecipesApp.App.Data
 
         public async Task<RecipeModel> UpdateRecipe(RecipeModel recipeModel)
         {
-            var r = await m_Context.Recipes.FindAsync(recipeModel.Id);
+            var recipe = await m_Context.Recipes
+                                        .Include(r => r.Ingredients)
+                                        .FirstOrDefaultAsync(r => r.Id == recipeModel.Id);
             // TODO: Null check
-            recipeModel.UpdateDomainObject(r);
+            recipeModel.UpdateDomainObject(recipe);
             await m_Context.SaveChangesAsync();
-            return RecipeModel.FromDomainObject(r);
+            return RecipeModel.FromDomainObject(recipe);
         }
 
         public async Task DeleteRecipe(RecipeModel recipeModel)
         {
-            var r = await m_Context.Recipes.FindAsync(recipeModel.Id);
+            var recipe = await m_Context.Recipes.FindAsync(recipeModel.Id);
             // TODO: Null check
-            m_Context.Recipes.Remove(r);
+            m_Context.Recipes.Remove(recipe);
             await m_Context.SaveChangesAsync();
         }
     }

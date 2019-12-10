@@ -22,6 +22,7 @@ namespace RecipesApp.Domain
 
         /* Navigation Properties */
 
+        // TODO: Expose as Read Only?
         public List<Ingredient> Ingredients { get; private set; }
 
         // ReSharper restore AutoPropertyCanBeMadeGetOnly.Local
@@ -37,6 +38,16 @@ namespace RecipesApp.Domain
             Name = name;
             TotalMinutes = totalMinutes;
             Reference = reference;
+        }
+
+        public void AddIngredient(Ingredient ingredient)
+        {
+            Ingredients.Add(ingredient);
+        }
+
+        public void AddIngredients(IEnumerable<Ingredient> ingredients)
+        {
+            Ingredients.AddRange(ingredients);
         }
     }
 }

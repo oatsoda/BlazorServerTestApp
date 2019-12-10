@@ -4,7 +4,6 @@ using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using RecipesApp.Domain.Bases;
@@ -16,6 +15,7 @@ namespace RecipesApp.Domain.Infrastructure.Context
         private readonly AuthenticationStateProvider m_AuthenticationStateProvider;
 
         public DbSet<Recipe> Recipes { get; set; }
+        public DbSet<Ingredient> Ingredient { get; set; }
         
         #region Ctors
 
@@ -58,7 +58,7 @@ namespace RecipesApp.Domain.Infrastructure.Context
              * https://docs.microsoft.com/en-us/ef/core/modeling/relational/data-types
              */
             modelBuilder.Entity<Ingredient>()
-                        .Property(nameof(Ingredient.Quantity))
+                        .Property(nameof(Domain.Ingredient.Quantity))
                         .HasColumnType("decimal(10, 2)");
             
 

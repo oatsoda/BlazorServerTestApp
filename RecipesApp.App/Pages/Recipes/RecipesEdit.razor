@@ -26,6 +26,43 @@
                         <input for="Name" class="form-control" @bind="@RecipeModel.Reference" />
                     </div>
                 </form>
+
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Quantity</th>
+                            <th>Quantity Unit</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var ingredient in @RecipeModel.Ingredients)
+                        {
+                            <tr id="@ingredient.Id">
+                                <td>@ingredient.Name</td>
+                                <td>@ingredient.Quantity</td>
+                                <td>@ingredient.QuantityType</td>
+                                <td></td>
+                            </tr>
+                        }
+
+                        <tr>
+                            <td>
+                                <input for="Name" class="form-control" @bind="@NewIngredientModel.Name" />
+                            </td>
+                            <td>
+                                <input for="Name" class="form-control" @bind="@NewIngredientModel.Quantity" />
+                            </td>
+                            <td>
+                                <input for="Name" class="form-control" @bind="@NewIngredientModel.QuantityType" />
+                            </td>
+                            <td>
+                                <button class="btn btn-block btn-info" @onclick="AddIngredient">Add</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-block btn-info" @onclick="Save" data-dismiss="modal">Save</button>
@@ -42,7 +79,9 @@
     [Parameter]
     public Guid RecipeId { get; set; }
 
-    private RecipeModel RecipeModel { get; set; }
+    private RecipeModel RecipeModel { get; set; } = new RecipeModel(); // Hmm, feels wrong on Edit page...
+
+    private IngredientModel NewIngredientModel { get; set; } = new IngredientModel();
 
     [Parameter]
     public EventCallback OnClose { get; set; }
@@ -59,5 +98,11 @@
     {
         RecipeModel = await RecipesService.UpdateRecipe(RecipeModel);
         await OnComplete.InvokeAsync(null);
+    }
+
+    private void AddIngredient()
+    {
+        RecipeModel.Ingredients.Add(NewIngredientModel);
+        NewIngredientModel = new IngredientModel();
     }
 }
