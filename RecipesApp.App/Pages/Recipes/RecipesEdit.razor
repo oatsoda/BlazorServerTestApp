@@ -43,7 +43,9 @@
                                 <td>@ingredient.Name</td>
                                 <td>@ingredient.Quantity</td>
                                 <td>@ingredient.QuantityType</td>
-                                <td></td>
+                                <td>
+                                    <button class="btn btn-block btn-info" @onclick="() => RemoveIngredient(ingredient)">Remove</button>
+                                </td>
                             </tr>
                         }
 
@@ -104,5 +106,10 @@
     {
         RecipeModel.Ingredients.Add(NewIngredientModel);
         NewIngredientModel = new IngredientModel();
+    }
+
+    private void RemoveIngredient(IngredientModel ingredient)
+    {
+        RecipeModel.Ingredients.Remove(ingredient);
     }
 }

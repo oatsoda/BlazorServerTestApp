@@ -53,15 +53,14 @@ namespace RecipesApp.App.Models
                 else
                     recipe.Ingredients.Add(ingredientModel.ToDomainObject(recipe));
             }
+            
+            // Remove if deleted, but not NEW entries
+            var toDelete = recipe.Ingredients
+                                 .Where(i => i.Id != Guid.Empty && Ingredients.All(im => im.Id != i.Id))
+                                 .Select(i => i.Id)
+                                 .ToList();
 
-
-            // TODO: Remove if deleted, but not NEW entries
-            //var toDelete = recipe.Ingredients
-            //                     .Where(i => Ingredients.All(im => im.Id != i.Id))
-            //                     .Select(i => i.Id)
-            //                     .ToList();
-
-            //recipe.Ingredients.RemoveAll(i => toDelete.Contains(i.Id));
+            recipe.Ingredients.RemoveAll(i => toDelete.Contains(i.Id));
         }
 
         public static RecipeModel FromDomainObject(Recipe r)

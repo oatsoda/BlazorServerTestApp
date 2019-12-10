@@ -9,6 +9,7 @@ namespace RecipesApp.Domain
     {
         // ReSharper disable AutoPropertyCanBeMadeGetOnly.Local - required by EF
 
+        [Required]
         public Guid RecipeId { get; private set; }
 
         [ForeignKey(nameof(RecipeId))]

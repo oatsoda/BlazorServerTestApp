@@ -47,6 +47,13 @@ namespace RecipesApp.Domain.Infrastructure.Context
              * here in a section which clearly defines why or what is not supported yet.
              */
 
+            /* DELETE BEHAVIOUR: Not supported with Data Annotations in EF.
+             * https://docs.microsoft.com/en-us/ef/core/modeling/relationships
+             */
+
+            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+
             /* INDEXES: Not supported with Data Annotations in EF.
              * https://docs.microsoft.com/en-us/ef/core/modeling/relational/indexes
              */
@@ -60,14 +67,13 @@ namespace RecipesApp.Domain.Infrastructure.Context
             modelBuilder.Entity<Ingredient>()
                         .Property(nameof(Domain.Ingredient.Quantity))
                         .HasColumnType("decimal(10, 2)");
-            
 
-            /* DELETE BEHAVIOUR: Not supported with Data Annotations in EF.
-             * https://docs.microsoft.com/en-us/ef/core/modeling/relationships
-             */
+            modelBuilder.Entity<Recipe>()
+                        .HasMany(r => r.Ingredients)
+                        .WithOne(i => i.Recipe)
+                        .OnDelete(DeleteBehavior.Cascade);
 
-            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
-                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+
         }
 
         #endregion
