@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using RecipesApp.Domain.Infrastructure.Context;
 using System;
-using Microsoft.AspNetCore.Identity;
 
 namespace RecipesApp.Domain.Infrastructure.Startup
 {
@@ -38,13 +38,26 @@ namespace RecipesApp.Domain.Infrastructure.Startup
              * Use this if you don't care about Pooling the Context objects
              */
 
-            services.AddDbContext<RecipesContext>((serviceProvider, options) =>
-                                                   {
-                                                       options.UseSqlServer(connectionString, o => o.EnableRetryOnFailure());
-                                                   });
+            //services.AddDbContext<RecipesContext>((serviceProvider, options) =>
+            //                                       {
+            //                                           options.UseSqlServer(connectionString, o => o.EnableRetryOnFailure());
+            //                                       });
 
-            services.AddDefaultIdentity<IdentityUser>()
-                    .AddEntityFrameworkStores<RecipesContext>();
+
+             services.AddDbContext<RecipesContext>((serviceProvider, options) =>
+             {
+                 options.UseCosmos(
+                                   "https://localhost:8081",
+                                   "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==",
+                                   databaseName: "RecipesDb");
+             });
+
+
+             services.AddDefaultIdentity<IdentityUser>()
+                     .AddEntityFrameworkStores<RecipesContext>();
+
+
+             services.BuildServiceProvider().GetService<RecipesContext>().Database.EnsureCreatedAsync().GetAwaiter().GetResult();
 
             return services;
         }

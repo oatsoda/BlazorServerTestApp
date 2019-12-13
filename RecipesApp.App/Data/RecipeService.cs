@@ -31,7 +31,7 @@ namespace RecipesApp.App.Data
         public async Task<RecipeModel> GetRecipe(Guid id)
         {
             var recipe = await m_Context.Recipes
-                                        .Include(r => r.Ingredients)
+                                        //.Include(r => r.Ingredients)
                                         .FirstOrDefaultAsync(r => r.Id == id);
             // TODO: Null check
             return RecipeModel.FromDomainObject(recipe);
@@ -48,7 +48,7 @@ namespace RecipesApp.App.Data
         public async Task<RecipeModel> UpdateRecipe(RecipeModel recipeModel)
         {
             var recipe = await m_Context.Recipes
-                                        .Include(r => r.Ingredients)
+                                        //.Include(r => r.Ingredients)
                                         .FirstOrDefaultAsync(r => r.Id == recipeModel.Id);
             // TODO: Null check
             recipeModel.UpdateDomainObject(recipe);

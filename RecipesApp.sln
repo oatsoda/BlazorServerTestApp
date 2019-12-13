@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RecipesApp.Domain", "Recipe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RecipesApp.Domain.Infrastructure", "RecipesApp.Domain.Infrastructure\RecipesApp.Domain.Infrastructure.csproj", "{B864DD50-3DF5-44E9-B02E-18916BA546B2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RecipesApp.Domain.Infrastructure.RunMigrations", "RecipesApp.Domain.Infrastructure.RunMigrations\RecipesApp.Domain.Infrastructure.RunMigrations.csproj", "{D6BEAA93-4255-4A93-B546-CD40CD6B1205}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RecipesApp.App", "RecipesApp.App\RecipesApp.App.csproj", "{A80EC83D-8305-4C9A-AEB5-4FD02875B55D}"
 EndProject
 Global
@@ -25,10 +23,6 @@ Global
 		{B864DD50-3DF5-44E9-B02E-18916BA546B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B864DD50-3DF5-44E9-B02E-18916BA546B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B864DD50-3DF5-44E9-B02E-18916BA546B2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D6BEAA93-4255-4A93-B546-CD40CD6B1205}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D6BEAA93-4255-4A93-B546-CD40CD6B1205}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D6BEAA93-4255-4A93-B546-CD40CD6B1205}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D6BEAA93-4255-4A93-B546-CD40CD6B1205}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A80EC83D-8305-4C9A-AEB5-4FD02875B55D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A80EC83D-8305-4C9A-AEB5-4FD02875B55D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A80EC83D-8305-4C9A-AEB5-4FD02875B55D}.Release|Any CPU.ActiveCfg = Release|Any CPU

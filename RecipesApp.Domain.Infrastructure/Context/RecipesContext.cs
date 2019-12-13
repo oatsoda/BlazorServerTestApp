@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using RecipesApp.Domain.Bases;
@@ -22,7 +23,6 @@ namespace RecipesApp.Domain.Infrastructure.Context
         // ReSharper disable once SuggestBaseTypeForParameter - recommended that EF Context fixed to specific context type.
         public RecipesContext(DbContextOptions<RecipesContext> options, AuthenticationStateProvider authenticationStateProvider) : base(options)
         {
-            // Ctor required for Migrations
             m_AuthenticationStateProvider = authenticationStateProvider;
         }
 
@@ -41,6 +41,8 @@ namespace RecipesApp.Domain.Infrastructure.Context
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.HasDefaultContainer("Users"); // To save having to specify on all the AspNetCore Identity types.
+
             /*
              * IMPORTANT: Use Data Annotations wherever possible where defining business logic.
              * Any cases that are not possible with Data Annotations, or which are "data store specific" should go
@@ -51,29 +53,24 @@ namespace RecipesApp.Domain.Infrastructure.Context
              * https://docs.microsoft.com/en-us/ef/core/modeling/relationships
              */
 
-            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
-                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            // TODO: Don't seem to be able to set Delete behaviour via the OnDelete of the OwnsMany relationship
+            //foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            //    relationship.DeleteBehavior = DeleteBehavior.Restrict;
 
             /* INDEXES: Not supported with Data Annotations in EF.
              * https://docs.microsoft.com/en-us/ef/core/modeling/relational/indexes
              */
             modelBuilder.Entity<Recipe>()
-                        .HasIndex(a => a.Name)
-                        .IsUnique();
-
-            /* DATA TYPES: Mappings from .NET to Data Store specific
-             * https://docs.microsoft.com/en-us/ef/core/modeling/relational/data-types
-             */
-            modelBuilder.Entity<Ingredient>()
-                        .Property(nameof(Domain.Ingredient.Quantity))
-                        .HasColumnType("decimal(10, 2)");
+                        .HasPartitionKey(r => r.Name)
+                        .ToContainer("Recipes");
 
             modelBuilder.Entity<Recipe>()
-                        .HasMany(r => r.Ingredients)
-                        .WithOne(i => i.Recipe)
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OwnsMany(r => r.Ingredients);
 
-
+            modelBuilder.Entity<Recipe>()
+                        .HasIndex(a => a.Name)
+                        .IsUnique();
+            
         }
 
         #endregion
@@ -105,6 +102,9 @@ namespace RecipesApp.Domain.Infrastructure.Context
         protected virtual async Task  SetCreatedUpdated()
         {
             var entities = ChangeTracker.Entries().Where(x => x.Entity is BaseEntity && (x.State == EntityState.Added || x.State == EntityState.Modified));
+
+            if (!entities.Any())
+                return;
 
             var authState = await m_AuthenticationStateProvider.GetAuthenticationStateAsync();
 
